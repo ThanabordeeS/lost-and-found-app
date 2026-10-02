@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+ feature/feed-and-search
+import 'features/feed/presentation/pages/feed_page.dart';
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: FeedPage(),
+  ));
+}
+
 import 'post/screens/create_post_screen.dart'; // import หน้าฟอร์มโพสต์
 
 void main() {
@@ -22,3 +32,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+ main
