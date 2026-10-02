@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'chat_page.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -13,8 +14,6 @@ class _FeedPageState extends State<FeedPage> {
   String selectedStatus = 'ทั้งหมด';
 
   final TextEditingController _searchController = TextEditingController();
-
-  // เซ็ตสำหรับเก็บ ID ของโพสต์ที่ถูก Bookmark ไว้
   final Set<int> bookmarkedPostIds = {};
 
   final List<String> categories = [
@@ -44,7 +43,7 @@ class _FeedPageState extends State<FeedPage> {
       'location': 'โรงกะทะ, สจล.',
       'time': '1 ชั่วโมงที่แล้ว',
       'imageUrl': 'https://picsum.photos/400/200?random=2',
-      'isResolved': true, // ตัวอย่างรายการที่ส่งคืนเจ้าของแล้ว
+      'isResolved': true,
     },
     {
       'id': 3,
@@ -81,7 +80,6 @@ class _FeedPageState extends State<FeedPage> {
         title: const Text('Lost & Found Feed', style: TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
         actions: [
-          // ไอคอนแสดงจำนวนโพสต์ที่บันทึกไว้
           Stack(
             alignment: Alignment.center,
             children: [
@@ -141,7 +139,7 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ),
 
-          // 2. Choice Chips (ของหาย/พบของ)
+          // 2. Choice Chips (สถานะ)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
             child: Row(
@@ -195,7 +193,7 @@ class _FeedPageState extends State<FeedPage> {
 
           const SizedBox(height: 8),
 
-          // 4. Feed Items
+          // 4. Feed List
           Expanded(
             child: RefreshIndicator(
               color: Colors.deepPurple,
@@ -238,7 +236,6 @@ class _FeedPageState extends State<FeedPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Stack รูปภาพ + Badges + ปุ่ม Bookmark
                               Stack(
                                 children: [
                                   ClipRRect(
@@ -250,7 +247,6 @@ class _FeedPageState extends State<FeedPage> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  // Badge ประเภท
                                   Positioned(
                                     top: 12,
                                     left: 12,
@@ -270,7 +266,6 @@ class _FeedPageState extends State<FeedPage> {
                                       ),
                                     ),
                                   ),
-                                  // Badge หมวดหมู่
                                   Positioned(
                                     top: 12,
                                     right: 50,
@@ -286,7 +281,6 @@ class _FeedPageState extends State<FeedPage> {
                                       ),
                                     ),
                                   ),
-                                  // ปุ่ม Bookmark มุมขวาบน
                                   Positioned(
                                     top: 6,
                                     right: 6,
@@ -314,8 +308,6 @@ class _FeedPageState extends State<FeedPage> {
                                   ),
                                 ],
                               ),
-
-                              // เนื้อหาโพสต์
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Column(
@@ -338,14 +330,18 @@ class _FeedPageState extends State<FeedPage> {
                                       ],
                                     ),
                                     const Divider(height: 20),
-                                    // ปุ่มดำเนินการด่วน (Quick Actions)
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         OutlinedButton.icon(
                                           onPressed: () {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(content: Text('กำลังเปิดช่องทางแชท...')),
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatPage(
+                                                  postTitle: post['title'],
+                                                ),
+                                              ),
                                             );
                                           },
                                           icon: const Icon(Icons.chat_bubble_outline, size: 16),
@@ -353,7 +349,9 @@ class _FeedPageState extends State<FeedPage> {
                                           style: OutlinedButton.styleFrom(
                                             foregroundColor: Colors.deepPurple,
                                             side: const BorderSide(color: Colors.deepPurple),
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
                                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                                           ),
                                         ),
